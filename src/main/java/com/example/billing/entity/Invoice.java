@@ -52,5 +52,6 @@ public class Invoice {
     private LocalDateTime createdAt;
     
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<InvoiceItem> invoiceItems;
 }

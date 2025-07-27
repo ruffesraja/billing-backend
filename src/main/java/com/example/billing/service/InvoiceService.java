@@ -106,13 +106,54 @@ public class InvoiceService {
     
     public InvoiceResponseDto updateInvoice(Long id, UpdateInvoiceRequestDto updateDto) {
         log.debug("Updating invoice with id: {}", id);
-        
+
         Invoice invoice = invoiceRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Invoice not found with id: " + id));
-        
+
+        // Update basic fields
         invoiceMapper.updateEntityFromDto(updateDto, invoice);
+
+        // Update invoice items if provided
+        if (updateDto.getItems() != null) {
+            List<InvoiceItem> updatedItems = new ArrayList<>();
+            BigDecimal totalAmount = BigDecimal.ZERO;
+            for (InvoiceItemDto itemDto : updateDto.getItems()) {
+                Product product = productRepository.findById(itemDto.getProductId())
+                        .orElseThrow(() -> new RuntimeException("Product not found with id: " + itemDto.getProductId()));
+                BigDecimal subtotal = product.getUnitPrice().multiply(BigDecimal.valueOf(itemDto.getQuantity()));
+                BigDecimal taxAmount = subtotal.multiply(product.getTaxPercent()).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+                BigDecimal itemTotal = subtotal.add(taxAmount);
+
+                // Try to find existing item for this product
+                InvoiceItem existingItem = invoice.getInvoiceItems().stream()
+                        .filter(ii -> ii.getProduct().getId().equals(product.getId()))
+                        .findFirst().orElse(null);
+                if (existingItem != null) {
+                    existingItem.setQuantity(itemDto.getQuantity());
+                    existingItem.setUnitPrice(product.getUnitPrice());
+                    existingItem.setTaxPercent(product.getTaxPercent());
+                    existingItem.setTotal(itemTotal);
+                    updatedItems.add(existingItem);
+                } else {
+                    InvoiceItem newItem = InvoiceItem.builder()
+                            .invoice(invoice)
+                            .product(product)
+                            .quantity(itemDto.getQuantity())
+                            .unitPrice(product.getUnitPrice())
+                            .taxPercent(product.getTaxPercent())
+                            .total(itemTotal)
+                            .build();
+                    updatedItems.add(newItem);
+                }
+                totalAmount = totalAmount.add(itemTotal);
+            }
+            // Set updated items directly; orphanRemoval will handle deletions
+            invoice.setInvoiceItems(updatedItems);
+            invoice.setTotalAmount(totalAmount);
+        }
+
         Invoice updatedInvoice = invoiceRepository.save(invoice);
-        
+
         log.info("Invoice updated successfully with id: {}", updatedInvoice.getId());
         return invoiceMapper.toResponseDto(updatedInvoice);
     }

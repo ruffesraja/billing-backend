@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Builder
@@ -17,4 +18,5 @@ public class UpdateInvoiceRequestDto {
     private LocalDate dueDate;
     private InvoiceStatus status;
     private String notes;
+    private List<InvoiceItemDto> items;
 }
