@@ -15,8 +15,12 @@ public interface ProductMapper {
     
     List<ProductResponseDto> toResponseDtoList(List<Product> products);
     
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     Product toEntity(CreateProductRequestDto createDto);
     
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
     void updateEntityFromDto(UpdateProductRequestDto updateDto, @MappingTarget Product product);
 }

@@ -5,13 +5,18 @@ import com.example.billing.dto.invoice.InvoiceResponseDto;
 import com.example.billing.dto.invoice.UpdateInvoiceRequestDto;
 import com.example.billing.enums.InvoiceStatus;
 import com.example.billing.service.InvoiceService;
+import com.example.billing.service.PdfService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -21,22 +26,18 @@ import java.util.List;
 public class InvoiceController {
     
     private final InvoiceService invoiceService;
+    private final PdfService pdfService;
     
     @GetMapping
     public ResponseEntity<List<InvoiceResponseDto>> getAllInvoices(
-            @RequestParam(required = false) Long customerId,
-            @RequestParam(required = false) InvoiceStatus status) {
-        log.info("GET /api/invoices - Fetching invoices");
+            @RequestParam(required = false) InvoiceStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam(required = false) String dateFilter) {
+        log.info("GET /api/invoices - Fetching invoices with filters: status={}, startDate={}, endDate={}, dateFilter={}", 
+                status, startDate, endDate, dateFilter);
         
-        List<InvoiceResponseDto> invoices;
-        
-        if (customerId != null) {
-            invoices = invoiceService.getInvoicesByCustomerId(customerId);
-        } else if (status != null) {
-            invoices = invoiceService.getInvoicesByStatus(status);
-        } else {
-            invoices = invoiceService.getAllInvoices();
-        }
+        List<InvoiceResponseDto> invoices = invoiceService.getInvoicesWithFilters(status, startDate, endDate, dateFilter);
         
         return ResponseEntity.ok(invoices);
     }
@@ -46,6 +47,32 @@ public class InvoiceController {
         log.info("GET /api/invoices/{} - Fetching invoice by id", id);
         InvoiceResponseDto invoice = invoiceService.getInvoiceById(id);
         return ResponseEntity.ok(invoice);
+    }
+    
+    @GetMapping("/{id}/pdf")
+    public ResponseEntity<byte[]> downloadInvoicePdf(@PathVariable Long id) {
+        log.info("GET /api/invoices/{}/pdf - Generating PDF for invoice", id);
+        
+        try {
+            // Get invoice details
+            InvoiceResponseDto invoice = invoiceService.getInvoiceById(id);
+            
+            // Generate PDF
+            byte[] pdfBytes = pdfService.generateInvoicePdf(invoice);
+            
+            // Set response headers
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.setContentDispositionFormData("attachment", 
+                "invoice-" + invoice.getInvoiceNumber() + ".pdf");
+            headers.setContentLength(pdfBytes.length);
+            
+            return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+            
+        } catch (Exception e) {
+            log.error("Error generating PDF for invoice {}: {}", id, e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
     
     @PostMapping

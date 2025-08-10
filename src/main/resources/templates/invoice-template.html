@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            font-size: 10px;
+            line-height: 1.2;
+            color: #333;
+            background: #fff;
+        }
+        
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 15px;
+            background: #fff;
+        }
+        
+        /* Header Section - Compact */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #2563eb;
+        }
+        
+        .company-info {
+            flex: 1;
+        }
+        
+        .company-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .company-details {
+            font-size: 9px;
+            line-height: 1.3;
+            color: #555;
+        }
+        
+        .company-details div {
+            margin-bottom: 1px;
+        }
+        
+        .custom-header-text {
+            margin-top: 4px;
+            padding: 3px 6px;
+            background: #f0f9ff;
+            border-left: 2px solid #2563eb;
+            font-style: italic;
+            color: #1e40af;
+            font-size: 8px;
+            border-radius: 2px;
+        }
+        
+        .invoice-title {
+            text-align: right;
+            flex: 0 0 180px;
+        }
+        
+        .invoice-title h1 {
+            font-size: 24px;
+            color: #2563eb;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .invoice-number {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 3px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .status-unpaid { background: #fee2e2; color: #dc2626; }
+        .status-paid { background: #dcfce7; color: #16a34a; }
+        .status-overdue { background: #fef3c7; color: #d97706; }
+        
+        /* Invoice Details Section - Compact */
+        .invoice-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .bill-to, .invoice-info {
+            flex: 1;
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #2563eb;
+        }
+        
+        .bill-to {
+            margin-right: 15px;
+        }
+        
+        .section-title {
+            font-size: 11px;
+            font-weight: bold;
+            color: #2563eb;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .customer-name {
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            color: #1e293b;
+        }
+        
+        .customer-details, .invoice-meta {
+            font-size: 9px;
+            line-height: 1.4;
+        }
+        
+        .invoice-meta-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        
+        .invoice-meta-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .invoice-meta-value {
+            color: #1f2937;
+        }
+        
+        /* Items Table - Compact */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 12px;
+            background: #fff;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .items-table th {
+            background: #2563eb;
+            color: white;
+            padding: 6px 4px;
+            text-align: center;
+            font-size: 9px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .items-table td {
+            padding: 5px 4px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 9px;
+        }
+        
+        .item-name {
+            text-align: left;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .custom-product-badge {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            padding: 1px 4px;
+            border-radius: 6px;
+            font-size: 7px;
+            margin-left: 3px;
+            font-weight: bold;
+        }
+        
+        /* Totals Section - Compact */
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        
+        .totals-table {
+            border-collapse: collapse;
+            min-width: 250px;
+        }
+        
+        .totals-table td {
+            padding: 4px 10px;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 10px;
+        }
+        
+        .totals-table .label {
+            text-align: right;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .totals-table .amount {
+            text-align: right;
+            color: #1f2937;
+            font-weight: 500;
+            min-width: 80px;
+        }
+        
+        .totals-table .total-row {
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            font-size: 11px;
+        }
+        
+        .totals-table .total-row td {
+            border-bottom: none;
+            padding: 6px 10px;
+        }
+        
+        /* Bank Details - Compact */
+        .bank-details {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 4px;
+            padding: 8px;
+            margin-bottom: 10px;
+        }
+        
+        .bank-details-title {
+            font-weight: bold;
+            color: #92400e;
+            margin-bottom: 5px;
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        
+        .bank-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            font-size: 8px;
+            color: #78350f;
+        }
+        
+        .bank-section {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 4px;
+            border-radius: 2px;
+        }
+        
+        .bank-section h4 {
+            font-size: 9px;
+            font-weight: bold;
+            margin-bottom: 2px;
+            color: #92400e;
+        }
+        
+        /* Notes Section - Compact */
+        .notes-section {
+            margin-bottom: 8px;
+            background: #f8fafc;
+            padding: 6px;
+            border-radius: 4px;
+            border-left: 3px solid #6b7280;
+        }
+        
+        .notes-content {
+            font-size: 8px;
+            line-height: 1.3;
+            color: #4b5563;
+        }
+        
+        /* Footer - Compact */
+        .footer {
+            text-align: center;
+            padding: 8px;
+            background: #1f2937;
+            color: #f9fafb;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        
+        .footer-main {
+            font-weight: bold;
+            margin-bottom: 2px;
+            font-size: 9px;
+        }
+        
+        .footer-generated {
+            font-size: 7px;
+            opacity: 0.8;
+        }
+        
+        /* Print Styles */
+        @media print {
+            .invoice-container {
+                max-width: none;
+                padding: 10px;
+            }
+            
+            body {
+                font-size: 9px;
+            }
+            
+            .header {
+                page-break-inside: avoid;
+            }
+            
+            .items-table {
+                page-break-inside: auto;
+            }
+            
+            .items-table tr {
+                page-break-inside: avoid;
+            }
+            
+            .totals-section {
+                page-break-inside: avoid;
+            }
+            
+            .bank-details {
+                page-break-inside: avoid;
+            }
+        }
+        
+        /* Single Page Optimization */
+        @page {
+            size: A4;
+            margin: 0.5in;
+        }
+        
+        .single-page-container {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="company-info">
+                <div class="company-name" th:text="${owner != null ? owner.businessName : 'Your Business Name'}">Your Business Name</div>
+                <div class="company-details">
+                    <div th:if="${owner != null and owner.ownerName != null}" th:text="${owner.ownerName}">Owner Name</div>
+                    
+                    <!-- Compact Address -->
+                    <div th:if="${owner != null and owner.fullAddress != null and !#strings.isEmpty(owner.fullAddress)}" th:text="${owner.fullAddress}">Complete Address</div>
+                    <div th:if="${owner == null or owner.fullAddress == null or #strings.isEmpty(owner.fullAddress)}">
+                        <span th:if="${owner != null and owner.addressLine1 != null}" th:text="${owner.addressLine1}">Address Line 1</span>
+                        <span th:if="${owner != null and owner.addressLine2 != null}" th:text="', ' + ${owner.addressLine2}">, Address Line 2</span>
+                        <span th:if="${owner != null and owner.city != null}" th:text="', ' + ${owner.city}">, City</span>
+                        <span th:if="${owner != null and owner.pincode != null}" th:text="' - ' + ${owner.pincode}"> - Pincode</span>
+                        <span th:if="${owner != null and owner.state != null}" th:text="', ' + ${owner.state}">, State</span>
+                    </div>
+                    
+                    <!-- Compact Contact Info -->
+                    <div>
+                        <span th:if="${owner != null and owner.contactNumber != null}" th:text="'Ph: ' + ${owner.contactNumber}">Ph: Contact</span>
+                        <span th:if="${owner != null and owner.contactNumber == null and owner.phone != null}" th:text="'Ph: ' + ${owner.phone}">Ph: Phone</span>
+                        <span th:if="${owner != null and owner.email != null}" th:text="' | Email: ' + ${owner.email}"> | Email</span>
+                        <span th:if="${owner != null and owner.gstNumber != null}" th:text="' | GST: ' + ${owner.gstNumber}"> | GST</span>
+                    </div>
+                    
+                    <!-- Custom header text -->
+                    <div th:if="${owner != null and owner.invoiceHeaderText != null and !#strings.isEmpty(owner.invoiceHeaderText)}" 
+                         class="custom-header-text" th:text="${owner.invoiceHeaderText}">Custom Header Text</div>
+                </div>
+            </div>
+            <div class="invoice-title">
+                <h1>INVOICE</h1>
+                <div class="invoice-number" th:text="${invoice.invoiceNumber}">INV-001</div>
+                <div class="status-badge" 
+                     th:classappend="${invoice.status.name() == 'PAID' ? 'status-paid' : (invoice.status.name() == 'OVERDUE' ? 'status-overdue' : 'status-unpaid')}"
+                     th:text="${invoice.status}">UNPAID</div>
+            </div>
+        </div>
+
+        <!-- Invoice Details -->
+        <div class="invoice-details">
+            <div class="bill-to">
+                <div class="section-title">Bill To</div>
+                <div class="customer-info">
+                    <div class="customer-name" th:text="${invoice.customerName}">Customer Name</div>
+                    <div class="customer-details">
+                        <div th:if="${invoice.customerEmail}" th:text="${invoice.customerEmail}">customer@email.com</div>
+                        <div th:if="${invoice.customerPhone}" th:text="${invoice.customerPhone}">+1-234-567-8900</div>
+                        <div th:if="${invoice.customerAddress}" th:text="${invoice.customerAddress}">Customer Address</div>
+                        <div th:if="${invoice.customerGstNumber}">Customer GST: <span th:text="${invoice.customerGstNumber}">Customer GST</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="invoice-info">
+                <div class="section-title">Invoice Details</div>
+                <div class="invoice-meta">
+                    <div class="invoice-meta-item">
+                        <span class="invoice-meta-label">Date:</span>
+                        <span class="invoice-meta-value" th:text="${#temporals.format(invoice.invoiceDate, 'MMM dd, yyyy')}">Jan 15, 2024</span>
+                    </div>
+                    <div class="invoice-meta-item">
+                        <span class="invoice-meta-label">Due:</span>
+                        <span class="invoice-meta-value" th:text="${#temporals.format(invoice.dueDate, 'MMM dd, yyyy')}">Feb 15, 2024</span>
+                    </div>
+                    <div class="invoice-meta-item">
+                        <span class="invoice-meta-label">Total:</span>
+                        <span class="invoice-meta-value" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹1,000.00</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th style="width: 8%;">S.No</th>
+                    <th style="width: 45%;">Product/Service</th>
+                    <th style="width: 12%;">Qty</th>
+                    <th style="width: 17%;">Unit Price</th>
+                    <th style="width: 18%;">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item : ${invoice.lineItems}">
+                    <td th:text="${item.serialNumber}">1</td>
+                    <td class="item-name">
+                        <div>
+                            <span th:text="${item.productName}">Product Name</span>
+                            <span th:if="${item.isCustomProduct}" class="custom-product-badge">Custom</span>
+                        </div>
+                    </td>
+                    <td th:text="${item.quantity}">1</td>
+                    <td th:text="'₹' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">₹100.00</td>
+                    <td th:text="'₹' + ${#numbers.formatDecimal(item.lineTotal, 1, 2)}">₹100.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Totals Section -->
+        <div class="totals-section">
+            <table class="totals-table">
+                <tr>
+                    <td class="label">Subtotal:</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.subtotalAmount, 1, 2)}">₹800.00</td>
+                </tr>
+                
+                <!-- Transport Charges -->
+                <tr th:if="${invoice.transportCharges != null and invoice.transportCharges > 0}">
+                    <td class="label" th:text="${invoice.transportChargesLabel != null ? invoice.transportChargesLabel : 'Transport'} + ':'">Transport:</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.transportCharges, 1, 2)}">₹50.00</td>
+                </tr>
+                
+                <!-- Miscellaneous Charges -->
+                <tr th:if="${invoice.miscCharges != null and invoice.miscCharges > 0}">
+                    <td class="label" th:text="${invoice.miscChargesLabel != null ? invoice.miscChargesLabel : 'Misc'} + ':'">Misc:</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.miscCharges, 1, 2)}">₹25.00</td>
+                </tr>
+                
+                <!-- GST Breakdown -->
+                <tr th:if="${invoice.gstApplicable and invoice.cgstAmount != null and invoice.cgstAmount > 0}">
+                    <td class="label">CGST (<span th:text="${#numbers.formatDecimal(invoice.cgstRate, 1, 1)}">9.0</span>%):</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.cgstAmount, 1, 2)}">₹45.00</td>
+                </tr>
+                
+                <tr th:if="${invoice.gstApplicable and invoice.sgstAmount != null and invoice.sgstAmount > 0}">
+                    <td class="label">SGST (<span th:text="${#numbers.formatDecimal(invoice.sgstRate, 1, 1)}">9.0</span>%):</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.sgstAmount, 1, 2)}">₹45.00</td>
+                </tr>
+                
+                <!-- Final Total -->
+                <tr class="total-row">
+                    <td class="label">TOTAL:</td>
+                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹980.00</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Bank Details - Compact -->
+        <div th:if="${owner != null and (owner.primaryBankName != null or owner.bankName != null)}" class="bank-details">
+            <div class="bank-details-title">Payment Information</div>
+            <div class="bank-info">
+                <!-- Primary Bank Account -->
+                <div th:if="${owner.primaryBankName != null}" class="bank-section">
+                    <h4>Primary Bank</h4>
+                    <div><strong>Bank:</strong> <span th:text="${owner.primaryBankName}">Bank Name</span></div>
+                    <div th:if="${owner.primaryAccountNumber}"><strong>A/c:</strong> <span th:text="${owner.primaryAccountNumber}">****1234</span></div>
+                    <div th:if="${owner.primaryIfscCode}"><strong>IFSC:</strong> <span th:text="${owner.primaryIfscCode}">IFSC0001234</span></div>
+                </div>
+                
+                <!-- Secondary Bank Account -->
+                <div th:if="${owner.secondaryBankName != null}" class="bank-section">
+                    <h4>Secondary Bank</h4>
+                    <div><strong>Bank:</strong> <span th:text="${owner.secondaryBankName}">Corp Bank</span></div>
+                    <div th:if="${owner.secondaryAccountNumber}"><strong>A/c:</strong> <span th:text="${owner.secondaryAccountNumber}">****5678</span></div>
+                    <div th:if="${owner.secondaryIfscCode}"><strong>IFSC:</strong> <span th:text="${owner.secondaryIfscCode}">CORP0005678</span></div>
+                </div>
+                
+                <!-- Fallback to legacy bank details -->
+                <div th:if="${owner.primaryBankName == null and owner.bankName != null}" class="bank-section">
+                    <h4>Bank Details</h4>
+                    <div><strong>Bank:</strong> <span th:text="${owner.bankName}">Bank Name</span></div>
+                    <div th:if="${owner.accountNumber}"><strong>A/c:</strong> <span th:text="${owner.accountNumber}">****1234</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Terms and Conditions - Compact -->
+        <div th:if="${owner != null and owner.termsAndConditions != null and !#strings.isEmpty(owner.termsAndConditions)}" class="notes-section">
+            <div class="section-title">Terms & Conditions</div>
+            <div class="notes-content" th:text="${owner.termsAndConditions}">Business terms and conditions</div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div th:if="${owner != null and owner.invoiceFooterText != null and !#strings.isEmpty(owner.invoiceFooterText)}" 
+                 class="footer-main" th:text="${owner.invoiceFooterText}">Custom footer text</div>
+            <div th:if="${owner != null and (owner.invoiceFooterText == null or #strings.isEmpty(owner.invoiceFooterText)) and owner.invoiceFooter != null}" 
+                 class="footer-main" th:text="${owner.invoiceFooter}">Thank you for your business!</div>
+            <div th:if="${owner == null or (owner.invoiceFooterText == null or #strings.isEmpty(owner.invoiceFooterText)) and owner.invoiceFooter == null}" 
+                 class="footer-main">Thank you for your business!</div>
+            <div class="footer-generated">
+                Generated on <span th:text="${#temporals.format(#temporals.createNow(), 'MMM dd, yyyy HH:mm')}">Jan 15, 2024 10:30 AM</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
