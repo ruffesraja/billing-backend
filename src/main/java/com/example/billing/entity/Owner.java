@@ -113,15 +113,6 @@ public class Owner {
     @Column(name = "default_sgst_rate")
     private Double defaultSgstRate = 9.0;
     
-    // Invoice Settings
-    @Builder.Default
-    @Column(name = "invoice_prefix")
-    private String invoicePrefix = "INV";
-    
-    @Builder.Default
-    @Column(name = "next_invoice_number")
-    private Long nextInvoiceNumber = 1L;
-    
     // Terms and Conditions
     @Column(name = "terms_and_conditions", length = 1000)
     private String termsAndConditions;

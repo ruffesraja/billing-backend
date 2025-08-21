@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.billing.service.InvoiceNumberService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -33,11 +34,12 @@ public class InvoiceService {
     private final InvoiceRepository invoiceRepository;
     private final ProductRepository productRepository;
     private final InvoiceMapper invoiceMapper;
+    private final InvoiceNumberService invoiceNumberService;
     
     @Transactional(readOnly = true)
     public List<InvoiceResponseDto> getAllInvoices() {
         log.debug("Fetching all invoices");
-        List<Invoice> invoices = invoiceRepository.findAll();
+        List<Invoice> invoices = invoiceRepository.findAllByOrderByIdDesc();
         return invoiceMapper.toResponseDtoList(invoices);
     }
     
@@ -116,13 +118,13 @@ public class InvoiceService {
         
         // Apply filters based on available parameters
         if (status != null && filterStartDate != null && filterEndDate != null) {
-            invoices = invoiceRepository.findByStatusAndInvoiceDateBetween(status, filterStartDate, filterEndDate);
+            invoices = invoiceRepository.findByStatusAndInvoiceDateBetweenOrderByIdDesc(status, filterStartDate, filterEndDate);
         } else if (status != null) {
-            invoices = invoiceRepository.findByStatus(status);
+            invoices = invoiceRepository.findByStatusOrderByIdDesc(status);
         } else if (filterStartDate != null && filterEndDate != null) {
-            invoices = invoiceRepository.findByInvoiceDateBetween(filterStartDate, filterEndDate);
+            invoices = invoiceRepository.findByInvoiceDateBetweenOrderByIdDesc(filterStartDate, filterEndDate);
         } else {
-            invoices = invoiceRepository.findAll();
+            invoices = invoiceRepository.findAllByOrderByIdDesc();
         }
         
         return invoiceMapper.toResponseDtoList(invoices);
@@ -367,26 +369,25 @@ public class InvoiceService {
     @Transactional(readOnly = true)
     public List<InvoiceResponseDto> getInvoicesByStatus(InvoiceStatus status) {
         log.debug("Fetching invoices with status: {}", status);
-        List<Invoice> invoices = invoiceRepository.findByStatus(status);
+        List<Invoice> invoices = invoiceRepository.findByStatusOrderByIdDesc(status);
         return invoiceMapper.toResponseDtoList(invoices);
     }
     
     @Transactional(readOnly = true)
     public List<InvoiceResponseDto> searchInvoicesByCustomerName(String customerName) {
         log.debug("Searching invoices for customer name: {}", customerName);
-        List<Invoice> invoices = invoiceRepository.findByCustomerNameContainingIgnoreCase(customerName);
+        List<Invoice> invoices = invoiceRepository.findByCustomerNameContainingIgnoreCaseOrderByIdDesc(customerName);
         return invoiceMapper.toResponseDtoList(invoices);
     }
     
     @Transactional(readOnly = true)
     public List<InvoiceResponseDto> getInvoicesByCustomerEmail(String customerEmail) {
         log.debug("Fetching invoices for customer email: {}", customerEmail);
-        List<Invoice> invoices = invoiceRepository.findByCustomerEmail(customerEmail);
+        List<Invoice> invoices = invoiceRepository.findByCustomerEmailOrderByIdDesc(customerEmail);
         return invoiceMapper.toResponseDtoList(invoices);
     }
     
     private String generateInvoiceNumber() {
-        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        return "INV-" + timestamp;
+        return invoiceNumberService.generateNextInvoiceNumber();
     }
 }

@@ -61,8 +61,6 @@ public class CreateOwnerRequestDto {
     
     private Double defaultCgstRate;
     private Double defaultSgstRate;
-    private String invoicePrefix;
-    private Long nextInvoiceNumber;
     private String termsAndConditions;
     private String paymentTerms;
     

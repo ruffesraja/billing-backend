@@ -267,10 +267,18 @@
         }
         
         .totals-table .total-row {
-            background: #2563eb;
-            color: white;
+            background: #f3f4f6;
+            color: #2563eb;
             font-weight: bold;
             font-size: 15px;
+        }
+        
+        .totals-table .total-row .label {
+            color: #2563eb;
+        }
+        
+        .totals-table .total-row .amount {
+            color: #2563eb;
         }
         
         .totals-table .total-row td {
@@ -622,7 +630,7 @@
                 <div th:if="${owner.primaryBankName != null}" class="bank-section primary-bank">
                     <h4>Primary Bank</h4>
                     <div class="bank-row">
-                        <span class="bank-label">Name:</span>
+                        <span class="bank-label">Bank Name:</span>
                         <span class="bank-value" th:text="${owner.primaryBankName}">Bank Name</span>
                     </div>
                     <div th:if="${owner.primaryAccountHolderName}" class="bank-row">
@@ -643,7 +651,7 @@
                 <div th:if="${owner.secondaryBankName != null}" class="bank-section secondary-bank">
                     <h4>Secondary Bank</h4>
                     <div class="bank-row">
-                        <span class="bank-label">Name:</span>
+                        <span class="bank-label">Bank Name:</span>
                         <span class="bank-value" th:text="${owner.secondaryBankName}">Corp Bank</span>
                     </div>
                     <div th:if="${owner.secondaryAccountHolderName}" class="bank-row">

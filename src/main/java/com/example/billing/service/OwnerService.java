@@ -74,12 +74,6 @@ public class OwnerService {
         if (owner.getDefaultSgstRate() == null) {
             owner.setDefaultSgstRate(9.0);
         }
-        if (owner.getInvoicePrefix() == null || owner.getInvoicePrefix().trim().isEmpty()) {
-            owner.setInvoicePrefix("INV");
-        }
-        if (owner.getNextInvoiceNumber() == null) {
-            owner.setNextInvoiceNumber(1L);
-        }
         
         Owner savedOwner = ownerRepository.save(owner);
         log.debug("Created owner with id: {}", savedOwner.getId());
