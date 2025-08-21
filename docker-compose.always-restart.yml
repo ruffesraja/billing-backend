@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database with ALWAYS restart
+  postgres:
+    image: postgres:15-alpine
+    container_name: billing-postgres-docker
+    environment:
+      POSTGRES_DB: billing_db
+      POSTGRES_USER: billing_user
+      POSTGRES_PASSWORD: billing_password
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - billing-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U billing_user -d billing_db"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always  # ✅ ALWAYS restart (even if manually stopped)
+
+  # Billing Application with ALWAYS restart
+  billing-app:
+    image: ruffes/billing-app:1.0.0
+    container_name: billing-app-docker
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/billing_db
+      SPRING_DATASOURCE_USERNAME: billing_user
+      SPRING_DATASOURCE_PASSWORD: billing_password
+      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: false
+      SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8080
+      LOGGING_LEVEL_COM_EXAMPLE_BILLING: INFO
+      JAVA_OPTS: "-Xmx512m -Xms256m -Djava.security.egd=file:/dev/./urandom"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - billing-network
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/actuator/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: always  # ✅ ALWAYS restart (even if manually stopped)
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  billing-network:
+    driver: bridge

@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <style>
@@ -26,6 +27,37 @@
             background: #fff;
         }
         
+        /* God Header Section */
+        .god-header {
+            text-align: center;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: linear-gradient(135deg, #fef3c7 0%, #f3e8ff 100%);
+            border-radius: 6px;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .god-symbol {
+            font-size: 18px;
+            margin-bottom: 4px;
+            color: #7c2d12;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            line-height: 1.2;
+            display: block;
+            text-align: center;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        
+        .god-name {
+            font-size: 16px;
+            color: #7c2d12;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            line-height: 1.3;
+        }
+
         /* Header Section - Compact */
         .header {
             display: flex;
@@ -41,7 +73,7 @@
         }
         
         .company-name {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
             color: #2563eb;
             margin-bottom: 4px;
@@ -50,8 +82,8 @@
         }
         
         .company-details {
-            font-size: 9px;
-            line-height: 1.3;
+            font-size: 12px;
+            line-height: 1.4;
             color: #555;
         }
         
@@ -76,14 +108,14 @@
         }
         
         .invoice-title h1 {
-            font-size: 24px;
+            font-size: 32px;
             color: #2563eb;
             margin-bottom: 5px;
             font-weight: bold;
         }
         
         .invoice-number {
-            font-size: 11px;
+            font-size: 14px;
             color: #666;
             margin-bottom: 3px;
         }
@@ -122,7 +154,7 @@
         }
         
         .section-title {
-            font-size: 11px;
+            font-size: 14px;
             font-weight: bold;
             color: #2563eb;
             margin-bottom: 5px;
@@ -131,14 +163,14 @@
         }
         
         .customer-name {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
             margin-bottom: 4px;
             color: #1e293b;
         }
         
         .customer-details, .invoice-meta {
-            font-size: 9px;
+            font-size: 12px;
             line-height: 1.4;
         }
         
@@ -171,19 +203,19 @@
         .items-table th {
             background: #2563eb;
             color: white;
-            padding: 6px 4px;
+            padding: 8px 6px;
             text-align: center;
-            font-size: 9px;
+            font-size: 12px;
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.3px;
         }
         
         .items-table td {
-            padding: 5px 4px;
+            padding: 8px 6px;
             text-align: center;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 9px;
+            font-size: 12px;
         }
         
         .item-name {
@@ -216,9 +248,9 @@
         }
         
         .totals-table td {
-            padding: 4px 10px;
+            padding: 6px 10px;
             border-bottom: 1px solid #e5e7eb;
-            font-size: 10px;
+            font-size: 13px;
         }
         
         .totals-table .label {
@@ -238,50 +270,89 @@
             background: #2563eb;
             color: white;
             font-weight: bold;
-            font-size: 11px;
+            font-size: 15px;
         }
         
         .totals-table .total-row td {
             border-bottom: none;
-            padding: 6px 10px;
+            padding: 8px 10px;
         }
         
-        /* Bank Details - Compact */
+        /* Bank Details - Styled like original bill */
         .bank-details {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 4px;
-            padding: 8px;
-            margin-bottom: 10px;
+            background: #f8fafc;
+            border: 2px solid #2563eb;
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .bank-details-title {
             font-weight: bold;
-            color: #92400e;
-            margin-bottom: 5px;
-            font-size: 10px;
+            color: #2563eb;
+            margin-bottom: 12px;
+            font-size: 14px;
             text-transform: uppercase;
+            text-align: center;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 6px;
         }
         
         .bank-info {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
+            justify-content: space-between;
             gap: 8px;
-            font-size: 8px;
-            color: #78350f;
+            font-size: 9px;
+            color: #374151;
         }
         
         .bank-section {
-            background: rgba(255, 255, 255, 0.5);
-            padding: 4px;
-            border-radius: 2px;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .bank-section.primary-bank {
+            border-left: 3px solid #10b981;
+        }
+        
+        .bank-section.secondary-bank {
+            border-left: 3px solid #f59e0b;
         }
         
         .bank-section h4 {
-            font-size: 9px;
+            font-size: 12px;
             font-weight: bold;
+            margin-bottom: 4px;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .bank-section .bank-row {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 2px;
-            color: #92400e;
+            align-items: center;
+        }
+        
+        .bank-section .bank-label {
+            font-weight: 600;
+            color: #6b7280;
+            min-width: 90px;
+            font-size: 11px;
+        }
+        
+        .bank-section .bank-value {
+            color: #1f2937;
+            font-weight: 500;
+            text-align: left;
+            flex: 1;
+            font-size: 11px;
         }
         
         /* Notes Section - Compact */
@@ -368,6 +439,42 @@
 </head>
 <body>
     <div class="invoice-container">
+        <!-- God Header Section -->
+        <div th:if="${owner != null and (owner.headerGodSymbol != null or owner.headerName != null)}" class="god-header">
+            <div th:if="${owner.headerGodSymbol != null and !#strings.isEmpty(owner.headerGodSymbol)}" 
+                 class="god-symbol">
+                <!-- Convert symbols to text for reliable PDF rendering -->
+                <span th:switch="${owner.headerGodSymbol}">
+                    <span th:case="'ॐ'">OM</span>
+                    <span th:case="'ஓம்'">OM</span>
+                    <span th:case="'🕉️'">OM</span>
+                    <span th:case="'🕉'">OM</span>
+                    <span th:case="'శ్రీ'">SHRI</span>
+                    <span th:case="'गणेश'">GANESH</span>
+                    <span th:case="'श्री'">SHRI</span>
+                    <span th:case="'✡'">STAR</span>
+                    <span th:case="'☪'">CRESCENT</span>
+                    <span th:case="'✝'">CROSS</span>
+                    <span th:case="'☸'">WHEEL</span>
+                    <span th:case="'*'">*</span>
+                    <span th:case="'+'">+</span>
+                    <span th:case="'○'">O</span>
+                    <!-- If none match, check if it's a known Unicode symbol and convert, otherwise show as-is -->
+                    <span th:case="*">
+                        <span th:if="${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
+                                     #strings.contains(owner.headerGodSymbol, 'ஓம்') or
+                                     #strings.contains(owner.headerGodSymbol, '🕉')}">OM</span>
+                        <span th:unless="${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
+                                        #strings.contains(owner.headerGodSymbol, 'ஓம்') or
+                                        #strings.contains(owner.headerGodSymbol, '🕉')}" 
+                              th:text="${owner.headerGodSymbol}">SYMBOL</span>
+                    </span>
+                </span>
+            </div>
+            <div th:if="${owner.headerName != null and !#strings.isEmpty(owner.headerName)}" 
+                 class="god-name" th:text="${owner.headerName}">Sri Periyandavar Thunal</div>
+        </div>
+        
         <!-- Header -->
         <div class="header">
             <div class="company-info">
@@ -507,32 +614,76 @@
             </table>
         </div>
 
-        <!-- Bank Details - Compact -->
+        <!-- Bank Details - Styled like original bill -->
         <div th:if="${owner != null and (owner.primaryBankName != null or owner.bankName != null)}" class="bank-details">
             <div class="bank-details-title">Payment Information</div>
             <div class="bank-info">
-                <!-- Primary Bank Account -->
-                <div th:if="${owner.primaryBankName != null}" class="bank-section">
+                <!-- Primary Bank Account (Left Side) -->
+                <div th:if="${owner.primaryBankName != null}" class="bank-section primary-bank">
                     <h4>Primary Bank</h4>
-                    <div><strong>Bank:</strong> <span th:text="${owner.primaryBankName}">Bank Name</span></div>
-                    <div th:if="${owner.primaryAccountNumber}"><strong>A/c:</strong> <span th:text="${owner.primaryAccountNumber}">****1234</span></div>
-                    <div th:if="${owner.primaryIfscCode}"><strong>IFSC:</strong> <span th:text="${owner.primaryIfscCode}">IFSC0001234</span></div>
+                    <div class="bank-row">
+                        <span class="bank-label">Name:</span>
+                        <span class="bank-value" th:text="${owner.primaryBankName}">Bank Name</span>
+                    </div>
+                    <div th:if="${owner.primaryAccountHolderName}" class="bank-row">
+                        <span class="bank-label">Account Holder:</span>
+                        <span class="bank-value" th:text="${owner.primaryAccountHolderName}">Account Holder</span>
+                    </div>
+                    <div th:if="${owner.primaryAccountNumber}" class="bank-row">
+                        <span class="bank-label">Account Number:</span>
+                        <span class="bank-value" th:text="${owner.primaryAccountNumber}">****1234</span>
+                    </div>
+                    <div th:if="${owner.primaryIfscCode}" class="bank-row">
+                        <span class="bank-label">IFSC:</span>
+                        <span class="bank-value" th:text="${owner.primaryIfscCode}">IFSC0001234</span>
+                    </div>
                 </div>
                 
-                <!-- Secondary Bank Account -->
-                <div th:if="${owner.secondaryBankName != null}" class="bank-section">
+                <!-- Secondary Bank Account (Right Side) -->
+                <div th:if="${owner.secondaryBankName != null}" class="bank-section secondary-bank">
                     <h4>Secondary Bank</h4>
-                    <div><strong>Bank:</strong> <span th:text="${owner.secondaryBankName}">Corp Bank</span></div>
-                    <div th:if="${owner.secondaryAccountNumber}"><strong>A/c:</strong> <span th:text="${owner.secondaryAccountNumber}">****5678</span></div>
-                    <div th:if="${owner.secondaryIfscCode}"><strong>IFSC:</strong> <span th:text="${owner.secondaryIfscCode}">CORP0005678</span></div>
+                    <div class="bank-row">
+                        <span class="bank-label">Name:</span>
+                        <span class="bank-value" th:text="${owner.secondaryBankName}">Corp Bank</span>
+                    </div>
+                    <div th:if="${owner.secondaryAccountHolderName}" class="bank-row">
+                        <span class="bank-label">Account Holder:</span>
+                        <span class="bank-value" th:text="${owner.secondaryAccountHolderName}">Account Holder</span>
+                    </div>
+                    <div th:if="${owner.secondaryAccountNumber}" class="bank-row">
+                        <span class="bank-label">Account Number:</span>
+                        <span class="bank-value" th:text="${owner.secondaryAccountNumber}">****5678</span>
+                    </div>
+                    <div th:if="${owner.secondaryIfscCode}" class="bank-row">
+                        <span class="bank-label">IFSC:</span>
+                        <span class="bank-value" th:text="${owner.secondaryIfscCode}">CORP0005678</span>
+                    </div>
                 </div>
                 
-                <!-- Fallback to legacy bank details -->
-                <div th:if="${owner.primaryBankName == null and owner.bankName != null}" class="bank-section">
+                <!-- Fallback to legacy bank details (Left Side) -->
+                <div th:if="${owner.primaryBankName == null and owner.bankName != null}" class="bank-section primary-bank">
                     <h4>Bank Details</h4>
-                    <div><strong>Bank:</strong> <span th:text="${owner.bankName}">Bank Name</span></div>
-                    <div th:if="${owner.accountNumber}"><strong>A/c:</strong> <span th:text="${owner.accountNumber}">****1234</span></div>
+                    <div class="bank-row">
+                        <span class="bank-label">Bank:</span>
+                        <span class="bank-value" th:text="${owner.bankName}">Bank Name</span>
+                    </div>
+                    <div th:if="${owner.accountHolderName}" class="bank-row">
+                        <span class="bank-label">Account Holder:</span>
+                        <span class="bank-value" th:text="${owner.accountHolderName}">Account Holder</span>
+                    </div>
+                    <div th:if="${owner.accountNumber}" class="bank-row">
+                        <span class="bank-label">Account Number:</span>
+                        <span class="bank-value" th:text="${owner.accountNumber}">****1234</span>
+                    </div>
+                    <div th:if="${owner.routingNumber}" class="bank-row">
+                        <span class="bank-label">IFSC:</span>
+                        <span class="bank-value" th:text="${owner.routingNumber}">ROUTING123</span>
+                    </div>
                 </div>
+                
+                <!-- Empty div for spacing when only one bank exists -->
+                <div th:if="${owner.primaryBankName != null and owner.secondaryBankName == null}" class="bank-section" style="visibility: hidden;"></div>
+                <div th:if="${owner.primaryBankName == null and owner.bankName != null and owner.secondaryBankName == null}" class="bank-section" style="visibility: hidden;"></div>
             </div>
         </div>
 

@@ -48,6 +48,11 @@ public class OwnerResponseDto {
     private String invoiceHeaderText;
     private String invoiceFooterText;
     private String businessLogoPath;
+    
+    // Header Configuration
+    private String headerGodSymbol;
+    private String headerName;
+    
     private Double defaultCgstRate;
     private Double defaultSgstRate;
     private String invoicePrefix;

@@ -97,6 +97,13 @@ public class Owner {
     @Column(name = "business_logo_path")
     private String businessLogoPath;
     
+    // Header Configuration (God Symbol and Name)
+    @Column(name = "header_god_symbol")
+    private String headerGodSymbol;
+    
+    @Column(name = "header_name")
+    private String headerName;
+    
     // Default Tax Rates
     @Builder.Default
     @Column(name = "default_cgst_rate")

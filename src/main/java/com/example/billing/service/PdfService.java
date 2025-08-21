@@ -2,7 +2,11 @@ package com.example.billing.service;
 
 import com.example.billing.dto.invoice.InvoiceResponseDto;
 import com.example.billing.dto.owner.OwnerResponseDto;
+import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.font.FontProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.thymeleaf.context.Context;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 @Service
@@ -54,9 +59,25 @@ public class PdfService {
             // Process the template
             String htmlContent = templateEngine.process("invoice-template", context);
             
-            // Convert HTML to PDF
+            // Convert HTML to PDF with proper encoding
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            HtmlConverter.convertToPdf(htmlContent, outputStream);
+            
+            // Set up PDF writer and document with UTF-8 support
+            PdfWriter pdfWriter = new PdfWriter(outputStream);
+            PdfDocument pdfDocument = new PdfDocument(pdfWriter);
+            
+            // Configure converter properties for proper Unicode support
+            ConverterProperties converterProperties = new ConverterProperties();
+            converterProperties.setCharset(StandardCharsets.UTF_8.name());
+            
+            // Set up font provider for better Unicode support
+            FontProvider fontProvider = new FontProvider();
+            fontProvider.addStandardPdfFonts();
+            fontProvider.addSystemFonts();
+            converterProperties.setFontProvider(fontProvider);
+            
+            // Convert HTML to PDF with UTF-8 encoding and font support
+            HtmlConverter.convertToPdf(htmlContent, pdfDocument, converterProperties);
             
             log.debug("PDF generated successfully for invoice: {}", invoice.getInvoiceNumber());
             return outputStream.toByteArray();
