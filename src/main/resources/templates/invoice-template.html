@@ -53,10 +53,10 @@
         /* God Header Section */
         .god-header {
             text-align: center;
-            margin-bottom: 10px;
-            padding: 8px;
+            margin-bottom: 6px;
+            padding: 4px;
             background: #fff3cd;
-            border-radius: 6px;
+            border-radius: 4px;
             border: 1px solid #ffeaa7;
             /* Production-safe properties */
             overflow: hidden;
@@ -112,8 +112,8 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 6px;
             border-bottom: 2px solid #2563eb;
             /* Production-safe flexbox */
             flex-direction: row;
@@ -132,10 +132,10 @@
         }
         
         .company-name {
-            font-size: 24px;
+            font-size: 14px;
             font-weight: bold;
             color: #2563eb;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             /* Production-safe font */
@@ -151,7 +151,7 @@
         }
         
         .company-details div {
-            margin-bottom: 1px;
+            margin-bottom: 0px;
         }
         
 
@@ -169,9 +169,9 @@
         }
         
         .invoice-title h1 {
-            font-size: 32px;
+            font-size: 14px;
             color: #2563eb;
-            margin-bottom: 5px;
+            margin-bottom: 3px;
             font-weight: bold;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
@@ -180,7 +180,7 @@
         .invoice-number {
             font-size: 14px;
             color: #666;
-            margin-bottom: 3px;
+            margin-bottom: 2px;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
         }
@@ -234,11 +234,13 @@
             font-size: 14px;
             font-weight: bold;
             color: #2563eb;
-            margin-bottom: 5px;
+            margin-bottom: 0;
             text-transform: uppercase;
             letter-spacing: 0.5px;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
+            margin-top: 0;
+            padding-top: 0;
         }
         
         .customer-name {
@@ -285,6 +287,7 @@
             border-radius: 4px;
             overflow: hidden;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            table-layout: fixed;
         }
         
         .items-table th {
@@ -326,7 +329,18 @@
             padding: 8px 6px;
             font-size: 13px;
             font-weight: 500;
-            text-align: center;
+        }
+        
+        .totals-row td:first-child {
+            text-align: right;
+            padding-right: 12px;
+            width: 60%;
+        }
+        
+        .totals-row td:last-child {
+            text-align: right;
+            padding-left: 12px;
+            width: 40%;
         }
         
         .totals-label {
@@ -335,6 +349,10 @@
             color: #1f2937;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
+            padding-right: 8px;
+            min-width: 120px;
+            display: block;
+            width: 100%;
         }
         
         .totals-amount {
@@ -343,6 +361,10 @@
             font-weight: 600;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
+            padding-left: 8px;
+            min-width: 100px;
+            display: block;
+            width: 100%;
         }
         
         .total-row {
@@ -354,11 +376,15 @@
             color: #2563eb;
             font-weight: bold;
             font-size: 15px;
+            text-align: right;
+            padding-right: 12px;
         }
         
         .total-row .totals-amount {
             color: #2563eb;
             font-size: 15px;
+            text-align: right;
+            padding-left: 12px;
         }
         
         /* Bank Details - Styled like original bill */
@@ -494,6 +520,9 @@
             padding: 6px;
             border-radius: 4px;
             border-left: 3px solid #6b7280;
+            min-height: 0;
+            margin-top: 0;
+            padding-top: 6px;
         }
         
         .notes-content {
@@ -502,6 +531,60 @@
             color: #4b5563;
             /* Production-safe font */
             font-family: "Times New Roman", Times, serif;
+        }
+        
+        .terms-container {
+            position: relative;
+            width: 100%;
+            min-height: 80px;
+        }
+        
+        .terms-left-section {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 60%;
+            z-index: 1;
+        }
+        
+        .terms-content {
+            font-size: 10px;
+            color: #6b7280;
+            line-height: 1.2;
+            margin-top: 0;
+            padding-top: 0;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
+        }
+        
+        .signature-section {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 35%;
+            text-align: center;
+            z-index: 2;
+        }
+        
+        .signature-image {
+            max-width: 100px;
+            max-height: 60px;
+            object-fit: contain;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin: 0 auto;
+            display: block;
+        }
+        
+        .signature-text {
+            font-size: 7px;
+            color: #6b7280;
+            text-align: center;
+            font-weight: 500;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
+            margin-top: 4px;
+            width: 100%;
         }
         
         /* Footer - Compact */
@@ -965,10 +1048,20 @@
             </div>
         </div>
 
-        <!-- Terms and Conditions - Compact -->
-        <div th:if="${owner != null and owner.termsAndConditions != null and !#strings.isEmpty(owner.termsAndConditions)}" class="notes-section">
-            <div class="section-title">Terms & Conditions</div>
-            <div class="notes-content" th:text="${owner.termsAndConditions}">Business terms and conditions</div>
+        <!-- Terms and Conditions with Signature -->
+        <div th:if="${owner != null and (owner.termsAndConditions != null and !#strings.isEmpty(owner.termsAndConditions)) or (owner.signatureBase64 != null and !#strings.isEmpty(owner.signatureBase64))}" class="notes-section">
+            <div class="terms-container">
+                <div class="terms-left-section">
+                    <div class="section-title">Terms & Conditions</div>
+                    <br>
+                    <div class="terms-content" th:text="${owner.termsAndConditions}">Enter your terms and conditions here</div>
+                </div>
+                <div th:if="${owner.signatureBase64 != null and !#strings.isEmpty(owner.signatureBase64)}" class="signature-section">
+                    <img th:src="'data:image/jpeg;base64,' + ${owner.signatureBase64}" alt="Signature" class="signature-image" />
+                    <br>
+                    <div class="signature-text" th:text="'For ' + ${owner.businessName}">For G.R. T.</div>
+                </div>
+            </div>
         </div>
 
         <!-- Footer -->
@@ -979,9 +1072,7 @@
                  class="footer-main" th:text="${owner.invoiceFooter}">Thank you for your business!</div>
             <div th:if="${owner == null or (owner.invoiceFooterText == null or #strings.isEmpty(owner.invoiceFooterText)) and owner.invoiceFooter == null}" 
                  class="footer-main">Thank you for your business!</div>
-            <div class="footer-generated">
-                Generated on <span th:text="${#temporals.format(#temporals.createNow(), 'MMM dd, yyyy HH:mm')}">Jan 15, 2024 10:30 AM</span>
-            </div>
+
         </div>
     </div>
 </body>

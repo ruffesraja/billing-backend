@@ -59,6 +59,9 @@ public class UpdateOwnerRequestDto {
     private String termsAndConditions;
     private String paymentTerms;
     
+    // Signature (base64 encoded)
+    private String signatureBase64;
+    
     // Legacy fields for backward compatibility
     private String phone;
     private String address;

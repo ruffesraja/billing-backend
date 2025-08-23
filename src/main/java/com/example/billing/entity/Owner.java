@@ -120,6 +120,10 @@ public class Owner {
     @Column(name = "payment_terms")
     private String paymentTerms;
     
+    // Signature (stored as base64)
+    @Column(name = "signature_base64", columnDefinition = "TEXT")
+    private String signatureBase64;
+    
     // Legacy fields for backward compatibility (keep existing data working)
     @Column(name = "phone")
     private String phone;
