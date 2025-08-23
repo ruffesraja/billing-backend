@@ -25,7 +25,7 @@ services:
 
   # Billing Application (using your Docker Hub image)
   billing-app:
-    image: ruffes/billing-app:1.0.0  # Using your pushed Docker Hub image
+    image: ruffes/billing-app:2.0.0  # Using your pushed Docker Hub image
     container_name: billing-app-docker
     ports:
       - "8081:8080"  # External port 8081 to avoid conflict with local Tomcat (8080)

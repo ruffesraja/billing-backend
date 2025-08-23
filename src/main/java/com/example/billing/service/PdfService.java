@@ -59,6 +59,14 @@ public class PdfService {
             // Process the template
             String htmlContent = templateEngine.process("invoice-template", context);
             
+            // Log the processed HTML content for debugging (only in debug mode)
+            if (log.isDebugEnabled()) {
+                log.debug("Processed HTML content length: {}", htmlContent.length());
+                if (owner != null && owner.getHeaderGodSymbol() != null) {
+                    log.debug("God symbol in template: '{}'", owner.getHeaderGodSymbol());
+                }
+            }
+            
             // Convert HTML to PDF with proper encoding
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             
@@ -70,10 +78,18 @@ public class PdfService {
             ConverterProperties converterProperties = new ConverterProperties();
             converterProperties.setCharset(StandardCharsets.UTF_8.name());
             
-            // Set up font provider for better Unicode support
+            // Set up font provider for better Unicode support in production
             FontProvider fontProvider = new FontProvider();
             fontProvider.addStandardPdfFonts();
-            fontProvider.addSystemFonts();
+            
+            // In production/Docker, system fonts may not be available
+            // Use only standard PDF fonts for maximum compatibility
+            try {
+                fontProvider.addSystemFonts();
+            } catch (Exception e) {
+                log.warn("System fonts not available in production environment, using standard PDF fonts only");
+            }
+            
             converterProperties.setFontProvider(fontProvider);
             
             // Convert HTML to PDF with UTF-8 encoding and font support

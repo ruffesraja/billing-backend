@@ -10,14 +10,27 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            /* Ensure consistent rendering across environments */
+            text-rendering: optimizeLegibility;
         }
         
         body {
-            font-family: 'Arial', sans-serif;
+            /* Production-safe font stack - use only fonts guaranteed to be available */
+            font-family: "Times New Roman", Times, serif;
             font-size: 10px;
             line-height: 1.2;
             color: #333;
             background: #fff;
+            /* Ensure consistent rendering */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Additional production-safe properties */
+            text-rendering: optimizeLegibility;
+            /* Ensure Unicode characters render properly */
+            unicode-bidi: normal;
+            direction: ltr;
+            /* Force proper font rendering */
+            font-feature-settings: "liga" 1, "kern" 1;
         }
         
         .invoice-container {
@@ -25,6 +38,16 @@
             margin: 0 auto;
             padding: 15px;
             background: #fff;
+            /* Production-safe layout */
+            overflow-x: hidden;
+            /* Ensure consistent rendering */
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            /* Additional production-safe properties */
+            text-rendering: optimizeLegibility;
+            /* Ensure Unicode characters render properly */
+            unicode-bidi: normal;
+            direction: ltr;
         }
         
         /* God Header Section */
@@ -32,30 +55,56 @@
             text-align: center;
             margin-bottom: 10px;
             padding: 8px;
-            background: linear-gradient(135deg, #fef3c7 0%, #f3e8ff 100%);
+            background: #fff3cd;
             border-radius: 6px;
-            border: 1px solid #e5e7eb;
+            border: 1px solid #ffeaa7;
+            /* Production-safe properties */
+            overflow: hidden;
+            /* Ensure consistent rendering across environments */
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+            /* Additional production-safe properties */
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+            /* Ensure proper text rendering */
+            text-rendering: optimizeLegibility;
         }
         
         .god-symbol {
             font-size: 18px;
             margin-bottom: 4px;
-            color: #7c2d12;
+            color: #856404;
             font-weight: bold;
-            font-family: Arial, sans-serif;
+            /* Hybrid font stack: Tamil support with production fallback */
+            font-family: "Nirmala UI", "Latha", "Code2000", "Arial Unicode MS", "Segoe UI", "Times New Roman", Times, serif;
             line-height: 1.2;
             display: block;
             text-align: center;
             letter-spacing: 1px;
-            text-transform: uppercase;
+            /* Don't uppercase Tamil characters */
+            text-transform: none;
+            /* Ensure proper rendering in production */
+            font-style: normal;
+            /* Additional production-safe properties */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Ensure consistent rendering across environments */
+            text-rendering: optimizeLegibility;
         }
         
         .god-name {
             font-size: 16px;
-            color: #7c2d12;
+            color: #856404;
             font-weight: 600;
             letter-spacing: 0.3px;
             line-height: 1.3;
+            /* Hybrid font stack: Tamil support with production fallback */
+            font-family: "Nirmala UI", "Latha", "Code2000", "Arial Unicode MS", "Segoe UI", "Times New Roman", Times, serif;
+            /* Additional production-safe properties */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Ensure consistent rendering across environments */
+            text-rendering: optimizeLegibility;
         }
 
         /* Header Section - Compact */
@@ -66,10 +115,20 @@
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 2px solid #2563eb;
+            /* Production-safe flexbox */
+            flex-direction: row;
+            flex-wrap: nowrap;
         }
         
         .company-info {
             flex: 1;
+            /* Production-safe flexbox */
+            min-width: 0;
+            overflow: hidden;
+            /* Additional production-safe properties */
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
         }
         
         .company-name {
@@ -79,31 +138,33 @@
             margin-bottom: 4px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .company-details {
             font-size: 12px;
             line-height: 1.4;
             color: #555;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .company-details div {
             margin-bottom: 1px;
         }
         
-        .custom-header-text {
-            margin-top: 4px;
-            padding: 3px 6px;
-            background: #f0f9ff;
-            border-left: 2px solid #2563eb;
-            font-style: italic;
-            color: #1e40af;
-            font-size: 8px;
-            border-radius: 2px;
-        }
+
         
         .invoice-title {
             text-align: right;
+            flex: 0 0 180px;
+            /* Production-safe flexbox */
+            min-width: 180px;
+            overflow: hidden;
+            /* Additional production-safe properties */
+            -webkit-box-flex: 0;
+            -ms-flex: 0 0 180px;
             flex: 0 0 180px;
         }
         
@@ -112,12 +173,16 @@
             color: #2563eb;
             margin-bottom: 5px;
             font-weight: bold;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .invoice-number {
             font-size: 14px;
             color: #666;
             margin-bottom: 3px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .status-badge {
@@ -128,6 +193,8 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .status-unpaid { background: #fee2e2; color: #dc2626; }
@@ -139,6 +206,9 @@
             display: flex;
             justify-content: space-between;
             margin-bottom: 15px;
+            /* Production-safe flexbox */
+            flex-direction: row;
+            flex-wrap: nowrap;
         }
         
         .bill-to, .invoice-info {
@@ -147,6 +217,13 @@
             padding: 8px;
             border-radius: 4px;
             border-left: 3px solid #2563eb;
+            /* Production-safe flexbox */
+            min-width: 0;
+            overflow: hidden;
+            /* Additional production-safe properties */
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
         }
         
         .bill-to {
@@ -160,6 +237,8 @@
             margin-bottom: 5px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .customer-name {
@@ -167,11 +246,15 @@
             font-weight: bold;
             margin-bottom: 4px;
             color: #1e293b;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .customer-details, .invoice-meta {
             font-size: 12px;
             line-height: 1.4;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .invoice-meta-item {
@@ -183,10 +266,14 @@
         .invoice-meta-label {
             font-weight: 600;
             color: #374151;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .invoice-meta-value {
             color: #1f2937;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         /* Items Table - Compact */
@@ -209,6 +296,8 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .items-table td {
@@ -216,74 +305,60 @@
             text-align: center;
             border-bottom: 1px solid #e5e7eb;
             font-size: 12px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .item-name {
             text-align: left;
             font-weight: 600;
             color: #1f2937;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
-        .custom-product-badge {
-            display: inline-block;
-            background: #3b82f6;
-            color: white;
-            padding: 1px 4px;
-            border-radius: 6px;
-            font-size: 7px;
-            margin-left: 3px;
-            font-weight: bold;
+        .totals-row {
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
         }
         
-        /* Totals Section - Compact */
-        .totals-section {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 12px;
-        }
-        
-        .totals-table {
-            border-collapse: collapse;
-            min-width: 250px;
-        }
-        
-        .totals-table td {
-            padding: 6px 10px;
-            border-bottom: 1px solid #e5e7eb;
+        .totals-row td {
+            padding: 8px 6px;
             font-size: 13px;
+            font-weight: 500;
+            text-align: center;
         }
         
-        .totals-table .label {
+        .totals-label {
             text-align: right;
             font-weight: 600;
-            color: #374151;
+            color: #1f2937;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
-        .totals-table .amount {
+        .totals-amount {
             text-align: right;
             color: #1f2937;
-            font-weight: 500;
-            min-width: 80px;
+            font-weight: 600;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
-        .totals-table .total-row {
+        .total-row {
             background: #f3f4f6;
+            border-top: 2px solid #2563eb;
+        }
+        
+        .total-row .totals-label {
             color: #2563eb;
             font-weight: bold;
             font-size: 15px;
         }
         
-        .totals-table .total-row .label {
+        .total-row .totals-amount {
             color: #2563eb;
-        }
-        
-        .totals-table .total-row .amount {
-            color: #2563eb;
-        }
-        
-        .totals-table .total-row td {
-            border-bottom: none;
-            padding: 8px 10px;
+            font-size: 15px;
         }
         
         /* Bank Details - Styled like original bill */
@@ -294,6 +369,8 @@
             padding: 12px;
             margin-bottom: 15px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            /* Production-safe layout */
+            overflow: hidden;
         }
         
         .bank-details-title {
@@ -306,6 +383,8 @@
             letter-spacing: 0.5px;
             border-bottom: 1px solid #e2e8f0;
             padding-bottom: 6px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .bank-info {
@@ -314,6 +393,17 @@
             gap: 8px;
             font-size: 9px;
             color: #374151;
+            /* Production-safe flexbox */
+            flex-direction: row;
+            align-items: stretch;
+            /* Additional production-safe properties */
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            -webkit-box-align: stretch;
+            -ms-flex-align: stretch;
         }
         
         .bank-section {
@@ -322,6 +412,13 @@
             padding: 8px;
             border-radius: 4px;
             border: 1px solid #e2e8f0;
+            /* Ensure proper width distribution */
+            min-width: 0;
+            width: calc(50% - 4px);
+            /* Additional production-safe properties */
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
         }
         
         .bank-section.primary-bank {
@@ -339,6 +436,8 @@
             color: #1f2937;
             text-transform: uppercase;
             letter-spacing: 0.3px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .bank-section .bank-row {
@@ -346,6 +445,17 @@
             justify-content: space-between;
             margin-bottom: 2px;
             align-items: center;
+            /* Production-safe flexbox */
+            flex-direction: row;
+            min-height: 16px;
+            /* Additional production-safe properties */
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
         }
         
         .bank-section .bank-label {
@@ -353,6 +463,12 @@
             color: #6b7280;
             min-width: 90px;
             font-size: 11px;
+            /* Ensure consistent width */
+            flex-shrink: 0;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
+            /* Additional production-safe properties */
+            -ms-flex-negative: 0;
         }
         
         .bank-section .bank-value {
@@ -361,6 +477,14 @@
             text-align: left;
             flex: 1;
             font-size: 11px;
+            /* Prevent text overflow */
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
+            /* Additional production-safe properties */
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
         }
         
         /* Notes Section - Compact */
@@ -376,6 +500,8 @@
             font-size: 8px;
             line-height: 1.3;
             color: #4b5563;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         /* Footer - Compact */
@@ -392,11 +518,15 @@
             font-weight: bold;
             margin-bottom: 2px;
             font-size: 9px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .footer-generated {
             font-size: 7px;
             opacity: 0.8;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         /* Print Styles */
@@ -431,6 +561,93 @@
             }
         }
         
+        /* Production-safe additional styles */
+        .bank-info {
+            /* Ensure consistent layout in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        
+        .bank-section {
+            /* Ensure consistent sizing in production */
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            width: calc(50% - 4px);
+            min-width: 0;
+        }
+        
+        .bank-row {
+            /* Ensure consistent row layout in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+        }
+        
+        /* God symbol production-safe styles */
+        .god-symbol {
+            /* Ensure consistent rendering in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: block;
+            /* Fallback for older browsers */
+            visibility: visible;
+            /* Ensure text is always visible */
+            color: #7c2d12 !important;
+            /* Don't override font family - let the hybrid stack work */
+            /* Additional production-safe properties */
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Ensure Unicode characters render properly */
+            unicode-bidi: normal;
+            direction: ltr;
+            /* Allow text wrapping for Tamil characters */
+            white-space: normal;
+            overflow: visible;
+        }
+        
+        .god-name {
+            /* Ensure consistent rendering in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: block;
+            /* Fallback for older browsers */
+            visibility: visible;
+            /* Ensure text is always visible */
+            color: #7c2d12 !important;
+            /* Don't override font family - let the hybrid stack work */
+            /* Additional production-safe properties */
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Ensure Unicode characters render properly */
+            unicode-bidi: normal;
+            direction: ltr;
+            /* Allow text wrapping for Tamil characters */
+            white-space: normal;
+            overflow: visible;
+        }
+        
         /* Single Page Optimization */
         @page {
             size: A4;
@@ -443,6 +660,65 @@
             flex-direction: column;
             justify-content: space-between;
         }
+        
+        /* Additional production-safe styles */
+        .header {
+            /* Ensure consistent header layout in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: start;
+            -ms-flex-align: start;
+            align-items: flex-start;
+        }
+        
+        /* Global Unicode rendering fixes */
+        html {
+            /* Ensure proper Unicode rendering */
+            text-rendering: optimizeLegibility;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* Force proper font rendering */
+            font-feature-settings: "liga" 1, "kern" 1;
+            /* Force proper display */
+            display: block;
+            visibility: visible;
+        }
+        
+        .invoice-details {
+            /* Ensure consistent invoice details layout in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+        }
+        
+        .totals-section {
+            /* Ensure consistent totals layout in production */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: horizontal;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+            flex-direction: row;
+            -webkit-box-pack: end;
+            -ms-flex-pack: end;
+            justify-content: flex-end;
+        }
     </style>
 </head>
 <body>
@@ -451,32 +727,27 @@
         <div th:if="${owner != null and (owner.headerGodSymbol != null or owner.headerName != null)}" class="god-header">
             <div th:if="${owner.headerGodSymbol != null and !#strings.isEmpty(owner.headerGodSymbol)}" 
                  class="god-symbol">
-                <!-- Convert symbols to text for reliable PDF rendering -->
-                <span th:switch="${owner.headerGodSymbol}">
-                    <span th:case="'ॐ'">OM</span>
-                    <span th:case="'ஓம்'">OM</span>
-                    <span th:case="'🕉️'">OM</span>
-                    <span th:case="'🕉'">OM</span>
-                    <span th:case="'శ్రీ'">SHRI</span>
-                    <span th:case="'गणेश'">GANESH</span>
-                    <span th:case="'श्री'">SHRI</span>
-                    <span th:case="'✡'">STAR</span>
-                    <span th:case="'☪'">CRESCENT</span>
-                    <span th:case="'✝'">CROSS</span>
-                    <span th:case="'☸'">WHEEL</span>
-                    <span th:case="'*'">*</span>
-                    <span th:case="'+'">+</span>
-                    <span th:case="'○'">O</span>
-                    <!-- If none match, check if it's a known Unicode symbol and convert, otherwise show as-is -->
-                    <span th:case="*">
-                        <span th:if="${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
-                                     #strings.contains(owner.headerGodSymbol, 'ஓம்') or
-                                     #strings.contains(owner.headerGodSymbol, '🕉')}">OM</span>
-                        <span th:unless="${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
-                                        #strings.contains(owner.headerGodSymbol, 'ஓம்') or
-                                        #strings.contains(owner.headerGodSymbol, '🕉')}" 
-                              th:text="${owner.headerGodSymbol}">SYMBOL</span>
-                    </span>
+                <!-- Smart symbol handling: only convert problematic symbols, preserve readable Tamil characters -->
+                <span th:with="isProblematicSymbol=${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
+                                                   #strings.contains(owner.headerGodSymbol, '🕉') or
+                                                   #strings.contains(owner.headerGodSymbol, '🕉️') or
+                                                   #strings.contains(owner.headerGodSymbol, '✡') or
+                                                   #strings.contains(owner.headerGodSymbol, '☪') or
+                                                   #strings.contains(owner.headerGodSymbol, '✝') or
+                                                   #strings.contains(owner.headerGodSymbol, '☸') or
+                                                   #strings.contains(owner.headerGodSymbol, '○')}">
+                    <!-- For truly problematic symbols (emojis, special Unicode), convert to text -->
+                    <span th:if="${isProblematicSymbol}" th:text="${#strings.contains(owner.headerGodSymbol, 'ॐ') or 
+                                                                   #strings.contains(owner.headerGodSymbol, '🕉') or
+                                                                   #strings.contains(owner.headerGodSymbol, '🕉️') ? 'OM' : 
+                                                                   #strings.contains(owner.headerGodSymbol, '✡') ? 'STAR' :
+                                                                   #strings.contains(owner.headerGodSymbol, '☪') ? 'CRESCENT' :
+                                                                   #strings.contains(owner.headerGodSymbol, '✝') ? 'CROSS' :
+                                                                   #strings.contains(owner.headerGodSymbol, '☸') ? 'WHEEL' :
+                                                                   #strings.contains(owner.headerGodSymbol, '○') ? 'O' : 
+                                                                   'OM'}">OM</span>
+                    <!-- For readable characters (Tamil, basic symbols), display as-is -->
+                    <span th:unless="${isProblematicSymbol}" th:text="${owner.headerGodSymbol}">உ</span>
                 </span>
             </div>
             <div th:if="${owner.headerName != null and !#strings.isEmpty(owner.headerName)}" 
@@ -508,9 +779,7 @@
                         <span th:if="${owner != null and owner.gstNumber != null}" th:text="' | GST: ' + ${owner.gstNumber}"> | GST</span>
                     </div>
                     
-                    <!-- Custom header text -->
-                    <div th:if="${owner != null and owner.invoiceHeaderText != null and !#strings.isEmpty(owner.invoiceHeaderText)}" 
-                         class="custom-header-text" th:text="${owner.invoiceHeaderText}">Custom Header Text</div>
+
                 </div>
             </div>
             <div class="invoice-title">
@@ -556,7 +825,7 @@
             </div>
         </div>
 
-        <!-- Items Table -->
+        <!-- Items Table with Totals -->
         <table class="items-table">
             <thead>
                 <tr>
@@ -573,54 +842,55 @@
                     <td class="item-name">
                         <div>
                             <span th:text="${item.productName}">Product Name</span>
-                            <span th:if="${item.isCustomProduct}" class="custom-product-badge">Custom</span>
                         </div>
                     </td>
                     <td th:text="${item.quantity}">1</td>
                     <td th:text="'₹' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">₹100.00</td>
                     <td th:text="'₹' + ${#numbers.formatDecimal(item.lineTotal, 1, 2)}">₹100.00</td>
                 </tr>
-            </tbody>
-        </table>
-
-        <!-- Totals Section -->
-        <div class="totals-section">
-            <table class="totals-table">
-                <tr>
-                    <td class="label">Subtotal:</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.subtotalAmount, 1, 2)}">₹800.00</td>
+                
+                <!-- Totals Section - Added as table rows -->
+                <tr class="totals-row">
+                    <td colspan="3"></td>
+                    <td class="totals-label">Subtotal:</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.subtotalAmount, 1, 2)}">₹800.00</td>
                 </tr>
                 
                 <!-- Transport Charges -->
-                <tr th:if="${invoice.transportCharges != null and invoice.transportCharges > 0}">
-                    <td class="label" th:text="${invoice.transportChargesLabel != null ? invoice.transportChargesLabel : 'Transport'} + ':'">Transport:</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.transportCharges, 1, 2)}">₹50.00</td>
+                <tr th:if="${invoice.transportCharges != null and invoice.transportCharges > 0}" class="totals-row">
+                    <td colspan="3"></td>
+                    <td class="totals-label" th:text="${invoice.transportChargesLabel != null ? invoice.transportChargesLabel : 'Transport Charges'} + ':'">Transport Charges:</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.transportCharges, 1, 2)}">₹50.00</td>
                 </tr>
                 
                 <!-- Miscellaneous Charges -->
-                <tr th:if="${invoice.miscCharges != null and invoice.miscCharges > 0}">
-                    <td class="label" th:text="${invoice.miscChargesLabel != null ? invoice.miscChargesLabel : 'Misc'} + ':'">Misc:</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.miscCharges, 1, 2)}">₹25.00</td>
+                <tr th:if="${invoice.miscCharges != null and invoice.miscCharges > 0}" class="totals-row">
+                    <td colspan="3"></td>
+                    <td class="totals-label" th:text="${invoice.miscChargesLabel != null ? invoice.miscChargesLabel : 'Misc'} + ':'">Misc:</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.miscCharges, 1, 2)}">₹25.00</td>
                 </tr>
                 
                 <!-- GST Breakdown -->
-                <tr th:if="${invoice.gstApplicable and invoice.cgstAmount != null and invoice.cgstAmount > 0}">
-                    <td class="label">CGST (<span th:text="${#numbers.formatDecimal(invoice.cgstRate, 1, 1)}">9.0</span>%):</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.cgstAmount, 1, 2)}">₹45.00</td>
+                <tr th:if="${invoice.gstApplicable and invoice.cgstAmount != null and invoice.cgstAmount > 0}" class="totals-row">
+                    <td colspan="3"></td>
+                    <td class="totals-label">CGST (<span th:text="${#numbers.formatDecimal(invoice.cgstRate, 1, 1)}">9.0</span>%):</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.cgstAmount, 1, 2)}">₹45.00</td>
                 </tr>
                 
-                <tr th:if="${invoice.gstApplicable and invoice.sgstAmount != null and invoice.sgstAmount > 0}">
-                    <td class="label">SGST (<span th:text="${#numbers.formatDecimal(invoice.sgstRate, 1, 1)}">9.0</span>%):</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.sgstAmount, 1, 2)}">₹45.00</td>
+                <tr th:if="${invoice.gstApplicable and invoice.sgstAmount != null and invoice.sgstAmount > 0}" class="totals-row">
+                    <td colspan="3"></td>
+                    <td class="totals-label">SGST (<span th:text="${#numbers.formatDecimal(invoice.sgstRate, 1, 1)}">9.0</span>%):</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.sgstAmount, 1, 2)}">₹45.00</td>
                 </tr>
                 
                 <!-- Final Total -->
                 <tr class="total-row">
-                    <td class="label">TOTAL:</td>
-                    <td class="amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹980.00</td>
+                    <td colspan="3"></td>
+                    <td class="totals-label">TOTAL:</td>
+                    <td class="totals-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹980.00</td>
                 </tr>
-            </table>
-        </div>
+            </tbody>
+        </table>
 
         <!-- Bank Details - Styled like original bill -->
         <div th:if="${owner != null and (owner.primaryBankName != null or owner.bankName != null)}" class="bank-details">
