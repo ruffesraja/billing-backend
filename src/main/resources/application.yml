@@ -1,6 +1,11 @@
 spring:
   application:
     name: billing-application
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
   
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/billing}

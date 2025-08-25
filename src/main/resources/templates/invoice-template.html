@@ -14,6 +14,7 @@
             text-rendering: optimizeLegibility;
         }
         
+        /* Font Consistency: All amounts, numbers, and currency values use consistent "Times New Roman" font */
         body {
             /* Production-safe font stack - use only fonts guaranteed to be available */
             font-family: "Times New Roman", Times, serif;
@@ -274,8 +275,24 @@
         
         .invoice-meta-value {
             color: #1f2937;
-            /* Production-safe font */
+            /* Production-safe font - Consistent with all amounts */
             font-family: "Times New Roman", Times, serif;
+            /* Ensure consistent number rendering */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+        
+        /* Special styling for the total amount in invoice details */
+        .invoice-total-amount {
+            font-weight: 600;
+            color: #2563eb;
+            font-size: 13px;
+            /* Production-safe font - Consistent with all amounts */
+            font-family: "Times New Roman", Times, serif;
+            /* Ensure consistent number rendering */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
         }
         
         /* Items Table - Compact */
@@ -320,6 +337,17 @@
             font-family: "Times New Roman", Times, serif;
         }
         
+        .amount-cell {
+            text-align: center;
+            font-weight: 500;
+            color: #1f2937;
+            /* Production-safe font - Consistent with all amounts */
+            font-family: "Times New Roman", Times, serif;
+            /* Ensure consistent number rendering */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
+        }
+        
         .totals-row {
             background: #f9fafb;
             border-top: 1px solid #e5e7eb;
@@ -329,6 +357,8 @@
             padding: 8px 6px;
             font-size: 13px;
             font-weight: 500;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .totals-row td:first-child {
@@ -359,12 +389,15 @@
             text-align: right;
             color: #1f2937;
             font-weight: 600;
-            /* Production-safe font */
+            /* Production-safe font - Consistent with all amounts */
             font-family: "Times New Roman", Times, serif;
             padding-left: 8px;
             min-width: 100px;
             display: block;
             width: 100%;
+            /* Ensure consistent number rendering */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
         }
         
         .total-row {
@@ -378,6 +411,8 @@
             font-size: 15px;
             text-align: right;
             padding-right: 12px;
+            /* Production-safe font */
+            font-family: "Times New Roman", Times, serif;
         }
         
         .total-row .totals-amount {
@@ -385,6 +420,11 @@
             font-size: 15px;
             text-align: right;
             padding-left: 12px;
+            /* Production-safe font - Consistent with all amounts */
+            font-family: "Times New Roman", Times, serif;
+            /* Ensure consistent number rendering */
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 0.5px;
         }
         
         /* Bank Details - Styled like original bill */
@@ -902,7 +942,7 @@
                     </div>
                     <div class="invoice-meta-item">
                         <span class="invoice-meta-label">Total:</span>
-                        <span class="invoice-meta-value" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹1,000.00</span>
+                        <span class="invoice-meta-value invoice-total-amount" th:text="'₹' + ${#numbers.formatDecimal(invoice.totalAmount, 1, 2)}">₹1,000.00</span>
                     </div>
                 </div>
             </div>
@@ -928,8 +968,8 @@
                         </div>
                     </td>
                     <td th:text="${item.quantity}">1</td>
-                    <td th:text="'₹' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">₹100.00</td>
-                    <td th:text="'₹' + ${#numbers.formatDecimal(item.lineTotal, 1, 2)}">₹100.00</td>
+                    <td class="amount-cell" th:text="'₹' + ${#numbers.formatDecimal(item.unitPrice, 1, 2)}">₹100.00</td>
+                    <td class="amount-cell" th:text="'₹' + ${#numbers.formatDecimal(item.lineTotal, 1, 2)}">₹100.00</td>
                 </tr>
                 
                 <!-- Totals Section - Added as table rows -->
